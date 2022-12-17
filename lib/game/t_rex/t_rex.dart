@@ -21,10 +21,9 @@ class TRex extends PositionComponent with HasGameRef<TRexGame> {
 
   // ref to children
   late final WaitingTRex idleDino = WaitingTRex(gameRef.spriteImage, config);
-  late final RunningTRex runningDino =
-      RunningTRex(gameRef.spriteImage, config);
-  late final JumpingTRex jumpingTRex =
-      JumpingTRex(gameRef.spriteImage, config);
+  late final RunningTRex runningDino = RunningTRex(gameRef.spriteImage, config);
+  late final JumpingTRex jumpingTRex = JumpingTRex(gameRef.spriteImage, config);
+  late final DuckingTRex duckingTRex = DuckingTRex(gameRef.spriteImage, config);
   late final SurprisedTRex surprisedTRex = SurprisedTRex(
     gameRef.spriteImage,
     config,
@@ -43,6 +42,7 @@ class TRex extends PositionComponent with HasGameRef<TRexGame> {
     add(idleDino);
     add(runningDino);
     add(jumpingTRex);
+    add(duckingTRex);
     add(surprisedTRex);
   }
 
@@ -55,6 +55,22 @@ class TRex extends PositionComponent with HasGameRef<TRexGame> {
     jumpVelocity = config.initialJumpVelocity - (speed / 10);
 
     reachedMinHeight = false;
+  }
+
+  void startDuck(double speed) {
+    if (status == TRexStatus.jumping || status == TRexStatus.ducking) {
+      return;
+    }
+
+    status = TRexStatus.ducking;
+  }
+
+  void endDuck(double speed) {
+    if (status == TRexStatus.jumping || status == TRexStatus.ducking) {
+      return;
+    }
+
+    status = TRexStatus.ducking;
   }
 
   void reset() {
@@ -129,6 +145,25 @@ class TRexStateStillComponent extends SpriteComponent with TRexStateVisibility {
   }
 }
 
+class TRexStateStillDuckComponent extends SpriteComponent
+    with TRexStateVisibility {
+  TRexStateStillDuckComponent({
+    required List<TRexStatus> showFor,
+    required Image spriteImage,
+    required TRexConfig config,
+    required Vector2 srcPosition,
+  }) : super(
+          size: Vector2(config.width, config.height),
+          sprite: Sprite(
+            spriteImage,
+            srcPosition: srcPosition,
+            srcSize: Vector2(config.widthDuck, config.heightDuck),
+          ),
+        ) {
+    this.showFor = showFor;
+  }
+}
+
 class TRexStateAnimatedComponent extends SpriteAnimationComponent
     with TRexStateVisibility {
   TRexStateAnimatedComponent({
@@ -185,6 +220,16 @@ class JumpingTRex extends TRexStateStillComponent {
           config: config,
           spriteImage: spriteImage,
           srcPosition: Vector2(1339.0, 6.0),
+        );
+}
+
+class DuckingTRex extends TRexStateStillDuckComponent {
+  DuckingTRex(Image spriteImage, TRexConfig config)
+      : super(
+          showFor: [TRexStatus.ducking],
+          config: config,
+          spriteImage: spriteImage,
+          srcPosition: Vector2(1870.0, 5.0),
         );
 }
 

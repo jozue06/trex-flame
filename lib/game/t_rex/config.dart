@@ -14,8 +14,8 @@ class TRexConfig {
   final double height = 90.0;
   final double width = 88.0;
 
-  final double heightDuck = 50.0;
-  final double widthDuck = 118.0;
+  final double heightDuck = 88.0;
+  final double widthDuck = 110.0;
 }
 
 final tRexCollisionBoxesDucking = <CollisionBox>[

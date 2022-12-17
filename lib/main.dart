@@ -48,8 +48,13 @@ class _TRexGameWrapperState extends State<TRexGameWrapper> {
 
   void onRawKeyEvent(RawKeyEvent event) {
     if (event.logicalKey == LogicalKeyboardKey.enter ||
-        event.logicalKey == LogicalKeyboardKey.space) {
-      game!.onAction();
+        event.logicalKey == LogicalKeyboardKey.space ||
+        event.logicalKey == LogicalKeyboardKey.arrowUp) {
+      game!.onJumpAction();
+    } else if (event.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
+      game!.onDuckAction();
+    } else if (game!.tRex.ducking) {
+      game!.onDuckAfterAction();
     }
   }
 

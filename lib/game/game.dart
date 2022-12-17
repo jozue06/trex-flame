@@ -67,15 +67,31 @@ class TRexGame extends FlameGame with TapDetector {
 
   @override
   void onTapDown(TapDownInfo event) {
-    onAction();
+    onJumpAction();
   }
 
-  void onAction() {
+  void onJumpAction() {
     if (gameOver) {
       restart();
       return;
     }
     tRex.startJump(currentSpeed);
+  }
+
+  void onDuckAction() {
+    if (gameOver) {
+      restart();
+      return;
+    }
+    tRex.startDuck(currentSpeed);
+  }
+
+  void onDuckAfterAction() {
+    if (gameOver) {
+      restart();
+      return;
+    }
+    tRex.reset();
   }
 
   void startGame() {
